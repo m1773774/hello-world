@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8"/>
+  <script src="build/react-with-addons.js"></script>
+  <script src="build/react-dom.min.js"></script>
+  <script src="build/ReactRouter.min.js"></script>
+  <script src="build/browser.min.js"></script>
+  <style>
+  body {
+    padding: 20px
+  }
+  </style>
+</head>
+<body>
+  <div id="container"></div>
+  <script type="text/babel">
+
+
+  const About = React.createClass({
+  render: function(){
+    return <div>About  {this.props.children}</div>
+  }})
+  const Message = React.createClass({
+    render() {
+      return <h3>Message{this.props.params.id}</h3>
+    }
+  })
+  const Inbox = React.createClass({  render:function(){
+    return (
+    <div>
+      <h2>Inbox</h2>
+      {/* 渲染这个 child 路由组件 */}
+      {this.props.children || "Welcome to your Inbox"}
+    </div>
+  )
+}})
+
+  var Home = React.createClass({
+      render:function(){
+      return <div>HOME</div>
+    }
+  })
+
+  var App = React.createClass({
+    render: function() {
+      return (
+        <div>
+          <h1>App</h1>
+          <ul>
+            <li><Link to="/about">About</Link></li>
+            <li><Link to="/inbox">Inbox</Link></li>
+                      <li><Link to="/messages/1">Msg</Link></li>
+          </ul>
+              {this.props.children}
+        </div>
+      )
+    }
+  })
+
+  var Router = ReactRouter.Router;
+  var Route = ReactRouter.Route;
+  var IndexRoute = ReactRouter.IndexRoute;
+  var Redirect = ReactRouter.Redirect;
+  var Link = ReactRouter.Link;
+
+
+  ReactDOM.render((
+    <Router>
+    <Route path="/" component={App}>
+      <IndexRoute component={Home}/>
+      <Route path="/about" component={About} />
+      <Route path="/inbox" component={Inbox} >
+        <Route path="/messages/:id" component={Message} />
+        <Redirect from="messages/:id" to="/messages/:id" />
+      </Route>
+    </Route>
+</Router>
+
+
+  ), document.getElementById('container'))
+  </script>
+</body>
+</html>
